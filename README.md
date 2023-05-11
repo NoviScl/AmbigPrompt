@@ -2,7 +2,9 @@
 
 This repository contains our code for running the experiments in our paper. It includes all the processed datasets as well as the script for running experiments with the OpenAI API. Please see below for more detailed instructions for running the code. 
 
-<img src="TeaserFigure.png" width="80%" height="auto"/>
+<p align="center">
+    <img src="TeaserFigure.png" width="70%" height="auto"/>
+</p>
 
 ## Data
 
