@@ -1,6 +1,8 @@
 # Measuring Inductive Biases of In-Context Learning with Underspecified Demonstrations (ACL 2023)
 
-This repo contains code for reproducing all our experiments in the paper. 
+This repository contains our code for running the experiments in our paper. It includes all the processed datasets as well as the script for running experiments with the OpenAI API. Please see below for more detailed instructions for running the code. 
+
+<img src="TeaserFigure.png" width="100%" height="auto"/>
 
 ## Data
 
