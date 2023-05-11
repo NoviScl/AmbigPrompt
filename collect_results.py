@@ -26,7 +26,6 @@ directory = "logs_ambiguous"
 file_names = get_file_names(directory)
 # testsets = [fname.split("_testset")[0] for fname in file_names]
 
-testsets = ["civilcomments_cluster3_vs_others"]
 seeds = ["seed0", "seed10"]
 models = ["text-davinci-002"]
 subsets = ["testset_1_1", "testset_0_0", "testset_1_0", "testset_0_1"]
@@ -48,7 +47,7 @@ for testset in testsets:
             EMs = []
             for seed in seeds:
                 fname = '_'.join([testset, subset, model, seed])+'.log'
-                with open("logs_ambiguous_unknown/"+fname, "r") as f:
+                with open("logs_ambiguous/"+fname, "r") as f:
                     lines = f.readlines()
                     ## take Calibrate-before-Use results by default
                     for line in lines:

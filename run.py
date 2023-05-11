@@ -43,11 +43,6 @@ subset_mappings = {
     "boolq_answer_overlap": "testsets_ambiguous/boolq_answer_overlap.json",
     "boolq_answer_qword": "testsets_ambiguous/boolq_answer_qword.json",
     "boolq_answer_structure": "testsets_ambiguous/boolq_answer_structure.json",
-    "cluster11_vs_others": "testsets_ambiguous_unknown/cluster11_vs_others.json",
-    "cluster18_vs_others": "testsets_ambiguous_unknown/cluster18_vs_others.json",
-    "cluster19_vs_others": "testsets_ambiguous_unknown/cluster19_vs_others.json",
-    "civilcomments_cluster0_vs_others": "testsets_ambiguous_unknown/civilcomments_cluster0_vs_others.json",
-    "civilcomments_cluster3_vs_others": "testsets_ambiguous_unknown/civilcomments_cluster3_vs_others.json",
 }
 
 z1_label_prefix_map = {
@@ -187,7 +182,6 @@ z2_instruction_map = {
     "boolq_answer_qword": "Given the passage and question, determine whether the question word is \"is/was\" or \"do/does/did\". Please answer with \"1\" for \"is/was\" and \"0\" for \"do/does/did\".",
     "boolq_answer_structure": "Given the passage and question, determine whether the question contains the phrase \"same as\". Please answer with \"1\" for having \"same as\" and \"0\" if not.",
 }
-
 
 z1_explanation_map = {
     "nli_entailment_genre_gov_fic": {"1": "The first sentence entails the second sentence. Therefore, the answer is 1.", "0": "The first sentence does not entail the second sentence. Therefore, the answer is 0."},
@@ -500,11 +494,6 @@ def main():
     counter = args.continue_from
     demos_questions = [d["question"].strip() for d in demos]
 
-    # prefix = "" ## shared prefix for all test examples
-    # if args.instruction and "mnli" in args.task:
-    #     prefix = "Your task is to decide whether the second sentence is entailed or implied by the first sentence. Answer yes if so, no otherwise. You should rely on the relationship between the sentences for making the prediction.\n\n"
-    # else:
-    #     prefix = ""
     if args.instruction_z1:
         prefix = z1_instruction_map[args.task] + "\n\n"
     elif args.instruction_z2:
@@ -626,13 +615,6 @@ def main():
                 eg["answer"] = mnli_label_map[eg["answer"]]
 
         elif args.instruction:
-        #     if "mnli" in args.task:
-        #         if eg["question"][-1] in puncs:
-        #             prompt += eg["question"][:-1].replace("\n", "\nDoes this mean ") + '?\n'
-        #         else:
-        #             prompt += eg["question"].replace("\n", "\nDoes this mean ") + '?\n'
-                
-        #         eg["answer"] = mnli_label_map[eg["answer"]]
             if "mnli" in args.task:
                 if eg["question"][-1] in puncs:
                     prompt += eg["question"][:-1] + '?\n'
@@ -644,31 +626,13 @@ def main():
         else:
             prompt += eg["question"]  + "\n"
         
-        # if args.engine == "davinci" and "mmlu" in args.task:
         if args.verbalizer_z1:
             prompt += "\n" + z1_label_prefix_map[args.task]
         elif args.verbalizer_z2:
             prompt += "\n" + z2_label_prefix_map[args.task]
         else:
             prompt += "\nCategory:"
-        
-        # elif args.engine in ["davinci", "curie"]:
-        #     prompt += "Answer:"
-        # elif args.task not in ["subqa-goldsub1", "subqa-goldqa1", "subqa-step1"]:
-        #     prompt += "Answer: "
-
-
-        # if "cot" in args.prompt_method:
-        #     prompt += "Let's think step by step. "
-
-        # if args.prompt_method in ["zeroshot-step", "fewshot-cot", "fewshot-cot-selfcon"]:
-        #     prompt += "Let’s think step by step. "
-        
-        # if args.prompt_method == "fewshot-cot":
-        #     prompt += "Based on the fact that "
-        # else:
-        #     prompt += "Answer: "
-        
+    
         if "selfcon" in args.prompt_method:
             em = SelfConPrompt(args, counter, prompt, eg)
         else:
